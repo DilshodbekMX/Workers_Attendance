@@ -1,0 +1,182 @@
+{% extends 'attendance/dashboard/base_admin.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Lesson Create {% endblock %}
+
+{% block image_block %}
+
+{% endblock %}
+
+{% block content %}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="index.html" class="brand-link">
+    <img src="{% static 'img/AdminLTELogo.png'%}"alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light">AdminLTE 3</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img src="{% static 'img/user2-160x160.jpg'%}" class="img-circle elevation-2" alt="User Image">
+      </div>
+      <div class="info">
+        <a href="#" class="d-block">Admin</a>
+      </div>
+    </div>
+
+    <!-- SidebarSearch Form -->
+    <div class="form-inline">
+      <div class="input-group" data-widget="sidebar-search">
+        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-sidebar">
+            <i class="fas fa-search fa-fw"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+        <li class="nav-item menu-open">
+          <a href="{% url 'attendance:dashboard' %}" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Главная страница
+
+            </p>
+          </a>
+        </li>
+        <li class="nav-item menu-open">
+          <a href="{% url 'attendance:admin_status' %}" class="nav-link ">
+            <i class="nav-icon fas fa-star"></i>
+            <p>
+              Список позиций
+            </p>
+          </a>
+        </li>
+        <li class="nav-item menu-open">
+          <a href="{% url 'attendance:admin_worker' %}" class="nav-link active">
+            <i class="nav-icon fas fa-users"></i>
+            <p>
+              Все рабочие
+            </p>
+          </a>
+        </li>
+        <li class="nav-item menu-open">
+          <a href="{% url 'attendance:admin_add_user' %}" class="nav-link">
+            <i class="nav-icon fas fa-user-secret"></i>
+            <p>
+              Добавить бригадира
+            </p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
+<div class="content-wrapper" style="min-height: 2171.6px;">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Добавить нового работника</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{% url 'attendance:dashboard' %}">Главная страница</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'attendance:admin_worker' %}">Все рабочие</a></li>
+            <li class="breadcrumb-item active">Добавить нового работника</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          {% if registered %}
+        
+          <div class="card card-default">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-bullhorn"></i>
+                Сообщение
+              </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+        
+              <div class="callout callout-success">
+                <h4>Поздравление. Новый сотрудник успешно добавлен!</h4>
+                <h6>Хотите добавить больше?</h6>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-outline-success and-all-other-classes"> 
+                    <a href="{% url 'attendance:admin_worker_create' %}" style="color:inherit">
+                      <i class="nav-icon fas fa-user-plus mr-2"></i>Добавить еще</a>
+                  </button>
+                  <button type="button" class="btn btn-outline-info and-all-other-classes"> 
+                    <a href="{% url 'attendance:dashboard' %}" style="color:inherit">
+                      <i class="nav-icon fas fa-tachometer-alt mr-2"></i>Вернуться на главную страницу</a>
+                  </button>
+                  <button type="button" class="btn btn-outline-primary and-all-other-classes"> 
+                    <a href="{% url 'attendance:admin_worker' %}" style="color:inherit">
+                      <i class="nav-icon fas fa-users mr-2"></i>Посмотреть список всех сотрудников</a>
+                  </button>
+              </div>
+              
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+        
+            {% else %}
+          <!-- general form elements -->
+          <div class="card card-primary">
+
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form method="post" enctype="multipart/form-data">
+              <div class="card-body">
+                {% csrf_token %}
+                {{worker_form|crispy}}
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Отправить</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+          {% endif%}
+        </div>
+        <!--/.col (left) -->
+
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'attendance/base.html' %}
+{% block title %}Rishton XTB{% endblock %}
+{% block content %}
+<style>
+	.container {
+		text-align: center;
+	}
+	body { 
+		background-color: #F9F9F9;
+	}
+
+	.container{
+		margin-top: 5%;
+	}
+
+	.card-header {
+        padding: 5px 15px;
+	}
+
+    .profile-img {
+        width: 96px;
+		height: 96px;
+        margin: 0 auto 10px;
+        display: block;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+    }
+</style>
+<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+
+<div class="">
+	<div class="container d-flex justify-content-center">
+		<div class="row">
+			<div class="card">
+			{% if error_message %}
+				<p><strong>{{ error_message }}</strong></p>
+			{% endif %}
+				<div class="card-header">
+					<strong>Login</strong>
+				</div>
+				<div class="card-body">
+						<form method="POST" action="{% url 'attendance:login_user' %}" name="login" id="login">
+							{% csrf_token %}
+						<div class="row">
+							<div class="col">
+								<span class="profile-img">
+									<i class='fas fa-user-circle' style='font-size:120px'></i>
+								</span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<hr> <!-- other content  -->
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<div class="form-group">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<h3 class="input-group-text mr-2" id="basic-addon1">
+												<i class='fas fa-user-shield'></i>
+											</h3>
+										</div>
+										<input type="text" class="form-control" id="loginEmail" placeholder="Username"  name="username" autofocus>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<h2 class="input-group-text mr-3" id="basic-addon1">
+												<i class='fas fa-user-secret'></i>
+											</h2>
+										</div>
+				
+										<input type="password" class="form-control" id="loginPassword" placeholder="Password" name="password">
+									</div>
+								</div>
+								<div class="form-group">
+									<input type="submit" class="btn btn-lg btn-success btn-block submit" id="login_m"  value="Submit"  style="cursor: pointer">
+								</div>
+							</div>
+						</div>
+					<!-- <a href="#" onClick="">I forgot my password!</a> -->
+					</form>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

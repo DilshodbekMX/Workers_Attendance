@@ -1,0 +1,234 @@
+
+          
+          {% extends 'attendance/dashboard/base_admin.html' %}
+
+          {% load static %}
+          {% load crispy_forms_tags %}
+          
+          {% block title %}Status Update{% endblock %}
+          
+          {% block image_block %}
+          
+          {% endblock %}
+          
+          {% block content %}
+          
+          <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index.html" class="brand-link">
+              <img src="{% static 'img/AdminLTELogo.png'%}"alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+              <span class="brand-text font-weight-light">AdminLTE 3</span>
+            </a>
+          
+            <!-- Sidebar -->
+            <div class="sidebar">
+              <!-- Sidebar user panel (optional) -->
+              <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                  <img src="{% static 'img/user2-160x160.jpg'%}" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                  <a href="#" class="d-block">Admin</a>
+                </div>
+              </div>
+          
+              <!-- SidebarSearch Form -->
+              <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                  <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                  <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                      <i class="fas fa-search fa-fw"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Sidebar Menu -->
+              <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                  <!-- Add icons to the links using the .nav-icon class
+                       with font-awesome or any other icon font library -->
+                  <li class="nav-item menu-open">
+                    <a href="{% url 'attendance:dashboard' %}" class="nav-link">
+                      <i class="nav-icon fas fa-tachometer-alt"></i>
+                      <p>
+                        Главная страница
+          
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item menu-open">
+                    <a href="{% url 'attendance:admin_status' %}" class="nav-link ">
+                      <i class="nav-icon fas fa-star"></i>
+                      <p>
+                        Список позиций
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item menu-open">
+                    <a href="{% url 'attendance:admin_worker' %}" class="nav-link active">
+                      <i class="nav-icon fas fa-users"></i>
+                      <p>
+                        Все рабочие
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item menu-open">
+                    <a href="{% url 'attendance:admin_add_user' %}" class="nav-link">
+                      <i class="nav-icon fas fa-user-secret"></i>
+                      <p>
+                        Добавить бригадира
+                      </p>
+                    </a>
+                  </li>
+          
+                </ul>
+              </nav>
+              <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+          </aside>
+          <div class="content-wrapper" style="min-height: 2171.6px;">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+              <div class="container-fluid">
+                <div class="row mb-2">
+                  <div class="col-sm-6">
+                    <h1>Добавить нового работника with file</h1>
+                  </div>
+                  <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                      <li class="breadcrumb-item"><a href="{% url 'attendance:dashboard' %}">Главная страница</a></li>
+                      <li class="breadcrumb-item"><a href="{% url 'attendance:admin_worker' %}">Все рабочие</a></li>
+                      <li class="breadcrumb-item active">Добавить нового работника with file</li>
+                    </ol>
+                  </div>
+                </div>
+              </div><!-- /.container-fluid -->
+            </section>
+          
+            <!-- Main content -->
+            <section class="content">
+              <div class="container-fluid">
+                <div class="row">
+                  <!-- left column -->
+                  <div class="col-md-12">
+          
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+          
+                      {% if registered %}
+                      <div class="card text-center">
+                          <div class="card-header">
+          
+                          </div>
+                          <div class="card-body">
+                            <h5 class="card-title">Добавлен новый бригадир</h5>
+                            <p class="card-text">Новый бригадир успешно добавлен. Вы можете добавить еще одного бригадира или вернуться в главное окно.</p>
+                            <a href="{% url 'attendance:admin_add_user' %}" class="btn btn-outline-success btn-fw"><i class="mdi mdi-account-plus" aria-hidden="true"></i> Добавить еще одного бригадира</a>
+                            <a href="{% url 'attendance:dashboard' %}" class="btn btn-outline-info btn-fw"><i class=" mdi mdi-exit-to-app" aria-hidden="true"></i> Вернуться на главную страницу</a>
+                          </div>
+                          <div class="card-footer text-muted">
+            
+                          </div>
+                        </div>
+                  
+                      {% else %}
+                      <div class="card">
+                        <div class="card-body text-center"> 
+                          <h2 class="card-title" >Ma'lumot kiritish</h2>
+                          <form action="{% url 'attendance:add_xlsx_file'%}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                                   <div class="input-group">
+                                    <input type="file" class="form-control" title="Upload excel file" name="excel_file" id="inputGroupFile04"  aria-describedby="inputGroupFileAddon04" aria-label="Upload" required="required">
+                                    <input class="btn btn-secondary" type="submit" id="inputGroupFileAddon04" value="Yuklash"/>
+                                  </div>
+                                </form>
+                          <div class="table-responsive">
+                              {% if is_bad_zip %}
+                              <br>
+                              <br>
+                              <h3>Fayl Excelning<mark class="text-danger">.xlsx</mark> tipida bo'lishi kerak</h3>
+                              
+                              {% else %}
+                            <table class="table table-bordered">
+                                
+                                <tbody>
+                                    {% for row in excel_data %}
+                                  <tr>
+                                    {% for cell in row %}
+                                    <td> {{ cell }}</td>
+                                    {% endfor %}
+                                  </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                              {%endif%}
+                          </div>
+                          <br>
+                              <br>
+                              <br>
+                          <h5>Faqat <mark>.xlsx</mark> fayl bilan bexato qo'shishingiz mumkin</h5>
+                          <p>Misol uchun: <em><strong>o'quvchilar ro'yxati.xlsx</strong></em></p>
+                          <h2 class="card-title" >Jadvalning na'munaviy ko'rinish</h2>
+                          <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">A</th>
+                                    <th scope="col">B</th>
+                                    <th scope="col">C</th>
+                                    <th scope="col">D</th>
+                                  </tr>
+                              <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">O'quvchi Fish</th>
+                                <th scope="col">Sinfi</th>
+                                <th scope="col">Maktabi</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">1</th>
+                                <td>Abdubannonova Maftunaxon Mamurjon </td>
+                                <td>11-D sinf</td>
+                                <td>33-maktab</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">2</th>
+                                <td>Abdulxayev Solixiddin Mo'ydinjon o`g`li</td>
+                                <td>11-D sinf</td>
+                                <td>33-maktab</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">3</th>
+                                <td>Abduraximov Abduqaxxor Erkinjon o`g`li</td>
+                                <td>11-D sinf</td>
+                                <td>33-maktab</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          <p class="mt-3">*** Bu yerda <strong>A, B, C, D</strong> Excel dagi ustunlar nomi</p>
+                          
+                        </div>
+                      </div>
+            
+                      {% endif %}
+          
+                    </div>
+                    <!-- /.card -->
+              
+                  </div>
+                  <!--/.col (left) -->
+          
+                </div>
+                <!-- /.row -->
+              </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+          </div>
+          
+          
+          
+          {% endblock %}
+          
